@@ -34,8 +34,12 @@ func main() {
 	// r.Use(middleware.Logger())
 	// r.Use(middleware.RecoveryWithZap())
 
-	middleware.GetZapLogger().Info("服务器正在启动，监听端口 :3000")
-	if err := r.Run(":3000"); err != nil {
+	middleware.GetZapLogger().Info("服务器正在启动")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000" // 默认端口
+	}
+	if err := r.Run(":" + port); err != nil {
 		middleware.GetZapLogger().Error("服务器启动失败", zap.Error(err))
 	}
 }
