@@ -1,0 +1,7 @@
+{"level":"info","time":"2024-10-20T20:42:19.812+0800","caller":"middleware/logger.go:62","msg":"Logger middleware initialized"}
+{"level":"info","time":"2024-10-20T20:50:53.753+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T20:52:55.693+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T20:52:55.694+0800","caller":"api/main.go:33","msg":"服务器正在启动，监听端口 :3000"}
+{"level":"info","time":"2024-10-20T20:54:31.289+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T20:54:31.290+0800","caller":"api/main.go:29","msg":"服务器正在启动，监听端口 :3000"}
+{"level":"info","time":"2024-10-20T20:54:38.266+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/ping","status":200,"method":"POST","path":"/api/v1/ping","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.000171709,"time":"2024-10-20T12:54:38Z"}

@@ -1,0 +1,7 @@
+.vscode/
+.env
+go.sum
+__debug*
+docs/docs.go
+docs/swagger.go
+docker/*
