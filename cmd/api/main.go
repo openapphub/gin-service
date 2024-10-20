@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"openapphub/internal/config"
 	"openapphub/internal/middleware"
 	"openapphub/internal/server"
@@ -24,6 +25,9 @@ func main() {
 
 	// 装载路由
 	gin.SetMode(os.Getenv("GIN_MODE"))
+	// 禁用
+	gin.DefaultWriter = io.Discard
+
 	r := server.NewRouter()
 
 	// // 使用日志中间件

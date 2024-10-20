@@ -12,6 +12,8 @@ definitions:
     type: object
   service.UserLoginService:
     properties:
+      device_info:
+        type: string
       password:
         maxLength: 40
         minLength: 8
@@ -140,6 +142,36 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get current user information
+      tags:
+      - user
+  /user/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh the JWT access token using a refresh token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New access token
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: Refresh JWT token
       tags:
       - user
   /user/register:

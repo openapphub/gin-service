@@ -1,6 +1,10 @@
 package serializer
 
-import "openapphub/internal/model"
+import (
+	"openapphub/internal/model"
+
+	"github.com/gin-gonic/gin"
+)
 
 // User 用户序列化器
 type User struct {
@@ -28,5 +32,15 @@ func BuildUser(user model.User) User {
 func BuildUserResponse(user model.User) Response {
 	return Response{
 		Data: BuildUser(user),
+	}
+}
+
+func BuildUserResponseWithToken(user model.User, accessToken, refreshToken string) Response {
+	return Response{
+		Data: BuildUser(user),
+		Token: gin.H{
+			"access_token":  accessToken,
+			"refresh_token": refreshToken,
+		},
 	}
 }

@@ -1,7 +1,25 @@
-{"level":"info","time":"2024-10-20T20:42:19.812+0800","caller":"middleware/logger.go:62","msg":"Logger middleware initialized"}
-{"level":"info","time":"2024-10-20T20:50:53.753+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
-{"level":"info","time":"2024-10-20T20:52:55.693+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
-{"level":"info","time":"2024-10-20T20:52:55.694+0800","caller":"api/main.go:33","msg":"服务器正在启动，监听端口 :3000"}
-{"level":"info","time":"2024-10-20T20:54:31.289+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
-{"level":"info","time":"2024-10-20T20:54:31.290+0800","caller":"api/main.go:29","msg":"服务器正在启动，监听端口 :3000"}
-{"level":"info","time":"2024-10-20T20:54:38.266+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/ping","status":200,"method":"POST","path":"/api/v1/ping","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.000171709,"time":"2024-10-20T12:54:38Z"}
+{"level":"info","time":"2024-10-20T23:45:33.749+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T23:45:33.750+0800","caller":"api/main.go:37","msg":"服务器正在启动，监听端口 :3000"}
+{"level":"info","time":"2024-10-20T23:45:46.844+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"jwt"}
+{"level":"info","time":"2024-10-20T23:45:46.845+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":401,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.002402333,"time":"2024-10-20T15:45:46Z"}
+{"level":"info","time":"2024-10-20T23:46:06.911+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/login","status":200,"method":"POST","path":"/api/v1/user/login","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.337196584,"time":"2024-10-20T15:46:06Z"}
+{"level":"info","time":"2024-10-20T23:48:23.613+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T23:48:23.635+0800","caller":"api/main.go:37","msg":"服务器正在启动，监听端口 :3000"}
+{"level":"info","time":"2024-10-20T23:48:37.245+0800","caller":"service/user_login_service.go:36","msg":"authMode","authMode":"jwt"}
+{"level":"info","time":"2024-10-20T23:48:37.263+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/login","status":200,"method":"POST","path":"/api/v1/user/login","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.357741166,"time":"2024-10-20T15:48:37Z"}
+{"level":"info","time":"2024-10-20T23:50:09.735+0800","caller":"service/user_login_service.go:36","msg":"authMode","authMode":"jwt"}
+{"level":"info","time":"2024-10-20T23:50:09.755+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/login","status":200,"method":"POST","path":"/api/v1/user/login","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.306543416,"time":"2024-10-20T15:50:09Z"}
+{"level":"info","time":"2024-10-20T23:50:16.457+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"jwt"}
+{"level":"info","time":"2024-10-20T23:50:16.457+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":401,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.000791125,"time":"2024-10-20T15:50:16Z"}
+{"level":"info","time":"2024-10-20T23:50:33.743+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"jwt"}
+{"level":"info","time":"2024-10-20T23:50:33.744+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":200,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.026487167,"time":"2024-10-20T15:50:33Z"}
+{"level":"info","time":"2024-10-20T23:51:41.929+0800","caller":"middleware/logger.go:52","msg":"Logger initialized"}
+{"level":"info","time":"2024-10-20T23:51:41.929+0800","caller":"middleware/session.go:12","msg":"session","secret":"your_session_secret_here"}
+{"level":"info","time":"2024-10-20T23:51:41.930+0800","caller":"api/main.go:37","msg":"服务器正在启动，监听端口 :3000"}
+{"level":"info","time":"2024-10-20T23:51:48.171+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/login","status":200,"method":"POST","path":"/api/v1/user/login","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.313799125,"time":"2024-10-20T15:51:48Z"}
+{"level":"info","time":"2024-10-20T23:51:56.480+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"session"}
+{"level":"info","time":"2024-10-20T23:51:56.482+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":200,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.014816792,"time":"2024-10-20T15:51:56Z"}
+{"level":"info","time":"2024-10-20T23:52:01.881+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"session"}
+{"level":"info","time":"2024-10-20T23:52:01.885+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":200,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.006426292,"time":"2024-10-20T15:52:01Z"}
+{"level":"info","time":"2024-10-20T23:52:22.153+0800","caller":"middleware/auth.go:49","msg":"authMode","authMode":"session"}
+{"level":"info","time":"2024-10-20T23:52:22.154+0800","caller":"zap@v1.1.4/zap.go:117","msg":"/api/v1/user/me","status":401,"method":"GET","path":"/api/v1/user/me","query":"","ip":"::1","user-agent":"Apifox/1.0.0 (https://apifox.com)","latency":0.002238542,"time":"2024-10-20T15:52:22Z"}

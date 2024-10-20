@@ -12,6 +12,7 @@ type Response struct {
 	Data  interface{} `json:"data,omitempty"`
 	Msg   string      `json:"msg"`
 	Error string      `json:"error,omitempty"`
+	Token interface{} `json:"token,omitempty"`
 }
 
 // TrackedErrorResponse 有追踪信息的错误响应
