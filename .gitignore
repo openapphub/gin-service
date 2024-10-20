@@ -5,3 +5,4 @@ __debug*
 docs/docs.go
 docs/swagger.go
 docker/*
+logs/*
