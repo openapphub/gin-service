@@ -1,4 +1,14 @@
-# openapphub
+# openapphub-go
+
+> 项目基于大佬的 [singo](https://github.com/gourouting/singo) 二开修改, 调整了项目结构，加入了docker、makefile、AUTH_MODE（jwt or session）等内容。从头学习的话推荐跟着大佬的项目进行：
+
+- [让我们写个G站吧！Golang全栈编程实况](https://space.bilibili.com/10/channel/detail?cid=78794)
+
+- [仿B站的G站](https://github.com/Gourouting/giligili)
+
+- [Singo框架为移动端提供Token登录的案例](https://github.com/bydmm/singo-token-exmaple)
+
+-----
 
 openapphub: Simple Single Golang Web Service
 
