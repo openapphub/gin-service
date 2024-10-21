@@ -1,8 +1,8 @@
 module openapphub
 
-go 1.22.0
+go 1.23
 
-toolchain go1.23.2
+// toolchain go1.23.2
 
 require (
 	github.com/gavv/httpexpect v1.1.3
