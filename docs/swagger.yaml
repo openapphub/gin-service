@@ -9,6 +9,7 @@ definitions:
         type: string
       msg:
         type: string
+      token: {}
     type: object
   service.UserLoginService:
     properties:

@@ -27,6 +27,9 @@ jobs:
     - name: Install dependencies
       run: make install
 
+    - name: Create docs
+      run: make swagger
+
     - name: Update go.sum
       run: make update-deps
 
