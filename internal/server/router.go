@@ -7,6 +7,7 @@ import (
 
 	_ "openapphub/docs" // This line is important
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -21,6 +22,8 @@ func NewRouter() *gin.Engine {
 	// 使用日志中间件
 	r.Use(middleware.Logger())
 	r.Use(middleware.RecoveryWithZap())
+	// 使用 gzip
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	// 根据认证模式选择中间件
 	authMode := os.Getenv("AUTH_MODE")

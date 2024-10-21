@@ -39,6 +39,7 @@ https://github.com/Gourouting/openapphub
 5. [godotenv](https://github.com/joho/godotenv): 开发环境下的环境变量工具，方便使用环境变量
 6. [Gin-Cors](https://github.com/gin-contrib/cors): Gin框架提供的跨域中间件
 7. [httpexpect](https://github.com/gavv/httpexpect): 接口测试工具
+8. [gzip](http://github.com/gin-contrib/gzip): 接口压缩
 8. [JWT-Go](https://github.com/golang-jwt/jwt): JWT认证支持
 9. [Swagger](https://github.com/swaggo/gin-swagger): API文档生成工具
 10. 自行实现了国际化i18n的一些基本功能

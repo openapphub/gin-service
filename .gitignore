@@ -6,3 +6,4 @@ __debug*
 # docs/swagger.go
 docker/*
 logs/*
+logs/app.log
