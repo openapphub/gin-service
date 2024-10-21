@@ -27,8 +27,11 @@ jobs:
     - name: Install dependencies
       run: make install
 
-    - name: Create docs
-      run: make swagger
+    # - name: Install swag
+    #   run: go install github.com/swaggo/swag/cmd/swag@latest
+
+    # - name: Create docs
+    #   run: make swagger
 
     - name: Update go.sum
       run: make update-deps
