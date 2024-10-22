@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"openapphub/internal/api"
 	"openapphub/internal/middleware"
 	"os"
@@ -19,9 +20,16 @@ func NewRouter() *gin.Engine {
 
 	// 中间件, 顺序不能改
 	r.Use(middleware.Cors())
+	// 使用安全中间件
+	r.Use(middleware.SecureMiddleware())
 	// 使用日志中间件
 	r.Use(middleware.Logger())
 	r.Use(middleware.RecoveryWithZap())
+	// 使用限流中间件
+	r.Use(middleware.RateLimiter(middleware.RateLimiterConfig{
+		RateString:  "100-H",
+		LimitByUser: false,
+	}))
 	// 使用 gzip
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
@@ -35,19 +43,21 @@ func NewRouter() *gin.Engine {
 
 	// Swagger documentation
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	// 路由
-	v1 := r.Group("/api/v1")
+	// API 路由
+	apiVersion := "v1" // 可以轻松更改 API 版本
+	// v1 := r.Group("/api/v1")
+	v1 := r.Group(fmt.Sprintf("/api/%s", apiVersion))
 	{
+		// 公开路由
 		v1.POST("ping", api.Ping)
-
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)
-
 		// 用户登录
 		v1.POST("user/login", api.UserLogin)
 		// 刷新token
 		v1.POST("user/refresh", api.RefreshToken)
-		// 需要登录保护的
+
+		// 需要认证的路由
 		auth := v1.Group("")
 		auth.Use(middleware.AuthRequired())
 		{

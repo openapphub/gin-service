@@ -22,7 +22,7 @@ https://github.com/Gourouting/openapphub
 2. 已经支持go1.20，请安装这个版本的golang使用本项目
 3. 新增JWT认证支持
 4. 新增Swagger文档
-5. 新增logs处理
+5. 新增 zap logs处理
 
 ## 目的
 
@@ -41,7 +41,10 @@ https://github.com/Gourouting/openapphub
 7. [httpexpect](https://github.com/gavv/httpexpect): 接口测试工具
 8. [gzip](http://github.com/gin-contrib/gzip): 接口压缩
 8. [JWT-Go](https://github.com/golang-jwt/jwt): JWT认证支持
+9. [ulule-limiter](https://github.com/ulule/limiter/v3): 速率限制
 9. [Swagger](https://github.com/swaggo/gin-swagger): API文档生成工具
+10. [zap](https://github.com/uber-go/zap) :zap 高性能、结构化的日志库
+11. [secure](https://github.com/unrolled/secure): 为Go提供了一些安全相关的HTTP头
 10. 自行实现了国际化i18n的一些基本功能
 11. 本项目支持基于cookie的session和JWT两种认证方式
 
@@ -64,6 +67,7 @@ https://github.com/Gourouting/openapphub
 5. `internal/serializer`: 储存通用的json模型，把model得到的数据库模型转换成api需要的json对象
 6. `pkg/cache`: redis缓存相关的代码
 7. `internal/auth`: 权限控制相关的代码
+8. `internal/middleware/rate_limiter`: 速率限制
 8. `internal/util`: 一些通用的小工具
 9. `internal/config`: 配置文件和配置加载相关的代码
 10. `internal/middleware`: 中间件相关的代码

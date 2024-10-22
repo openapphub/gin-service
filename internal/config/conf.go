@@ -1,6 +1,7 @@
 package config
 
 import (
+	"openapphub/internal/middleware"
 	"openapphub/internal/model"
 	"openapphub/internal/util"
 	"openapphub/pkg/cache"
@@ -15,8 +16,11 @@ func Init() {
 	// 从本地读取环境变量
 	godotenv.Load()
 
-	// 设置日志级别
-	util.BuildLogger(os.Getenv("LOG_LEVEL"))
+	// 初始化 zap logger
+	middleware.InitLogger()
+
+	// 使用 middleware 中的 zapLogger 初始化 util.Logger
+	util.BuildLogger(middleware.GetZapLogger())
 
 	// 读取翻译文件
 	localesPath := findLocalesFile()

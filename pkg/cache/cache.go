@@ -5,6 +5,7 @@ import (
 	"openapphub/internal/util"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -29,4 +30,18 @@ func Redis() {
 	}
 
 	RedisClient = client
+}
+
+const cachePrefix = "cache_"
+
+func Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+	return RedisClient.Set(ctx, cachePrefix+key, value, expiration).Err()
+}
+
+func Get(ctx context.Context, key string) (string, error) {
+	return RedisClient.Get(ctx, cachePrefix+key).Result()
+}
+
+func Del(ctx context.Context, key string) error {
+	return RedisClient.Del(ctx, cachePrefix+key).Err()
 }

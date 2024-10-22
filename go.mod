@@ -21,7 +21,12 @@ require (
 	gorm.io/gorm v1.25.2
 )
 
-require github.com/gin-contrib/gzip v1.0.1 // indirect
+require (
+	github.com/gin-contrib/gzip v1.0.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/ulule/limiter/v3 v3.11.2 // indirect
+	github.com/unrolled/secure v1.16.0 // indirect
+)
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect

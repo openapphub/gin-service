@@ -36,6 +36,10 @@ const (
 	CodeEncryptError = 50002
 	//CodeParamErr 各种奇奇怪怪的参数错误
 	CodeParamErr = 40001
+	// CodeRateLimitExceeded 超出请求频率限制
+	CodeRateLimitExceeded = 40002
+	// CodeInternalServerError 内部服务器错误
+	CodeInternalServerError = 50000
 )
 
 // CheckLogin 检查登录
