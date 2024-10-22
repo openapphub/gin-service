@@ -5,6 +5,7 @@ import (
 	"openapphub/internal/api"
 	"openapphub/internal/middleware"
 	"os"
+	"time"
 
 	_ "openapphub/docs" // This line is important
 
@@ -49,11 +50,13 @@ func NewRouter() *gin.Engine {
 	v1 := r.Group(fmt.Sprintf("/api/%s", apiVersion))
 	{
 		// 公开路由
-		v1.POST("ping", api.Ping)
+		v1.GET("ping", middleware.CacheMiddleware(5*time.Minute), api.Ping)
+		// 缓存 ping
+		v1.POST("ping", middleware.CacheMiddleware(5*time.Minute), api.Ping)
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)
 		// 用户登录
-		v1.POST("user/login", api.UserLogin)
+		v1.POST("user/login", middleware.CacheMiddleware(5*time.Minute), api.UserLogin)
 		// 刷新token
 		v1.POST("user/refresh", api.RefreshToken)
 
