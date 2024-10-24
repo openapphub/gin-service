@@ -19,6 +19,12 @@ func SecureMiddleware() gin.HandlerFunc {
 	})
 
 	return func(c *gin.Context) {
+		// 排除特定路由的 CSP 策略
+		if c.FullPath() == "/swagger/*any" {
+			c.Next()
+			return
+		}
+
 		err := secureMiddleware.Process(c.Writer, c.Request)
 		if err != nil {
 			c.Abort()

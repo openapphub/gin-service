@@ -9,6 +9,144 @@
     "host": "localhost:3000",
     "basePath": "/api/v1",
     "paths": {
+        "/cache/clear": {
+            "post": {
+                "description": "Clear all cached items with a specific prefix",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cache"
+                ],
+                "summary": "Clear cache by prefix",
+                "parameters": [
+                    {
+                        "description": "Cache key prefix",
+                        "name": "prefix",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cache cleared successfully",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cache/invalidate": {
+            "post": {
+                "description": "Remove a specific key from the cache",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cache"
+                ],
+                "summary": "Invalidate cache for a specific key",
+                "parameters": [
+                    {
+                        "description": "Invalidate Cache Info",
+                        "name": "invalidate_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.InvalidateCacheInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cache invalidated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cache/refresh": {
+            "post": {
+                "description": "Refresh the cache for a specific key with a new duration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cache"
+                ],
+                "summary": "Refresh cache for a specific key",
+                "parameters": [
+                    {
+                        "description": "Refresh Cache Info",
+                        "name": "refresh_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.RefreshCacheInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cache refreshed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "post": {
                 "description": "do ping",
@@ -234,6 +372,55 @@
         }
     },
     "definitions": {
+        "api.InvalidateCacheInput": {
+            "type": "object",
+            "required": [
+                "method",
+                "path"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string",
+                    "enum": [
+                        "GET",
+                        "POST"
+                    ]
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.RefreshCacheInput": {
+            "type": "object",
+            "required": [
+                "duration",
+                "method",
+                "path"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "method": {
+                    "type": "string",
+                    "enum": [
+                        "GET",
+                        "POST"
+                    ]
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "serializer.Response": {
             "type": "object",
             "properties": {

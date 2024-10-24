@@ -1,5 +1,39 @@
 basePath: /api/v1
 definitions:
+  api.InvalidateCacheInput:
+    properties:
+      body:
+        type: string
+      method:
+        enum:
+        - GET
+        - POST
+        type: string
+      path:
+        type: string
+    required:
+    - method
+    - path
+    type: object
+  api.RefreshCacheInput:
+    properties:
+      body:
+        type: string
+      duration:
+        minimum: 1
+        type: integer
+      method:
+        enum:
+        - GET
+        - POST
+        type: string
+      path:
+        type: string
+    required:
+    - duration
+    - method
+    - path
+    type: object
   serializer.Response:
     properties:
       code:
@@ -58,6 +92,96 @@ info:
   title: openapphub API
   version: "1.0"
 paths:
+  /cache/clear:
+    post:
+      consumes:
+      - application/json
+      description: Clear all cached items with a specific prefix
+      parameters:
+      - description: Cache key prefix
+        in: body
+        name: prefix
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cache cleared successfully
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: Clear cache by prefix
+      tags:
+      - cache
+  /cache/invalidate:
+    post:
+      consumes:
+      - application/json
+      description: Remove a specific key from the cache
+      parameters:
+      - description: Invalidate Cache Info
+        in: body
+        name: invalidate_info
+        required: true
+        schema:
+          $ref: '#/definitions/api.InvalidateCacheInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cache invalidated successfully
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: Invalidate cache for a specific key
+      tags:
+      - cache
+  /cache/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh the cache for a specific key with a new duration
+      parameters:
+      - description: Refresh Cache Info
+        in: body
+        name: refresh_info
+        required: true
+        schema:
+          $ref: '#/definitions/api.RefreshCacheInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cache refreshed successfully
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: Refresh cache for a specific key
+      tags:
+      - cache
   /ping:
     post:
       consumes:

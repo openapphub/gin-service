@@ -2,14 +2,84 @@ package middleware
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/gob"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"io"
+	"openapphub/internal/util"
 	"openapphub/pkg/cache"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/singleflight"
 )
+
+// 用于规范化 JSON 的辅助结构
+type normalizedMap map[string]interface{}
+
+func (m normalizedMap) MarshalJSON() ([]byte, error) {
+	// 获取所有键并排序
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	// 按排序后的键顺序构建新的 map
+	orderedMap := make([]struct {
+		Key   string
+		Value interface{}
+	}, len(keys))
+
+	for i, k := range keys {
+		orderedMap[i].Key = k
+		orderedMap[i].Value = m[k]
+	}
+
+	return json.Marshal(orderedMap)
+}
+
+// 规范化 JSON 字符串
+func normalizeJSON(input []byte) ([]byte, error) {
+	if len(input) == 0 {
+		return input, nil
+	}
+
+	// 解析 JSON 到 map
+	var data interface{}
+	if err := json.Unmarshal(input, &data); err != nil {
+		return nil, err
+	}
+
+	// 规范化处理
+	normalized := normalizeJSONValue(data)
+
+	// 重新序列化
+	return json.Marshal(normalized)
+}
+
+// 递归处理 JSON 值
+func normalizeJSONValue(v interface{}) interface{} {
+	switch v := v.(type) {
+	case map[string]interface{}:
+		normalized := make(normalizedMap)
+		for k, val := range v {
+			normalized[k] = normalizeJSONValue(val)
+		}
+		return normalized
+	case []interface{}:
+		normalized := make([]interface{}, len(v))
+		for i, val := range v {
+			normalized[i] = normalizeJSONValue(val)
+		}
+		return normalized
+	default:
+		return v
+	}
+}
 
 type CachedResponse struct {
 	Status int
@@ -36,7 +106,7 @@ func CacheMiddleware(duration time.Duration) gin.HandlerFunc {
 		}
 
 		// Generate cache key
-		key := generateCacheKey(c)
+		key := GenerateCacheKey(c)
 
 		var cachedResponse *CachedResponse
 		var fromCache bool
@@ -105,16 +175,6 @@ func CacheMiddleware(duration time.Duration) gin.HandlerFunc {
 	}
 }
 
-func generateCacheKey(c *gin.Context) string {
-	// 添加版本前缀，方便未来升级时废弃旧缓存
-	version := "v1:"
-	if c.Request.Method == "GET" {
-		return version + c.Request.URL.String()
-	}
-	// POST 请求可以考虑加入请求体的哈希
-	return version + c.Request.URL.String()
-}
-
 func getCachedResponse(c *gin.Context, key string) (*CachedResponse, error) {
 	var response CachedResponse
 	data, err := cache.Get(c, key)
@@ -172,6 +232,7 @@ func (w *responseWriter) Body() []byte {
 }
 
 func InvalidateCache(c *gin.Context, key string) error {
+	util.Log().Info("InvalidateCache: %s", key)
 	return cache.Del(c, key)
 }
 
@@ -190,11 +251,62 @@ func ClearCacheByPrefix(c *gin.Context, prefix string) error {
 	return cache.DelByPrefix(c, prefix)
 }
 
-func GenerateCacheKey(method, path string, body []byte) string {
+func GenerateCacheKey(c *gin.Context) string {
+	method := c.Request.Method
+	path := c.Request.URL.Path
+	query := c.Request.URL.RawQuery
+	body := getRequestBody(c)
+
+	key := generateCacheKeyInternal(method, path, query, body)
+	util.Log().Info(fmt.Sprintf("Generated cache key for request - Method: %s, Path: %s, Key: %s", method, path, key))
+	return key
+}
+
+func GenerateCacheKeyFromParams(method, path string, query string, body []byte) string {
+	key := generateCacheKeyInternal(method, path, query, body)
+	util.Log().Info(fmt.Sprintf("Generated cache key from params - Method: %s, Path: %s, Key: %s", method, path, key))
+	return key
+}
+
+func generateCacheKeyInternal(method, path, query string, body []byte) string {
+	version := "v1:"
+	key := version + path
+
 	if method == "GET" {
-		return path
+		if query != "" {
+			key = key + "?" + query
+		}
 	} else if method == "POST" {
-		return path + string(body)
+		if len(body) > 0 {
+			// 规范化 JSON
+			normalizedBody, err := normalizeJSON(body)
+			if err != nil {
+				util.Log().Error(fmt.Sprintf("Failed to normalize JSON body: %s", err.Error()))
+				normalizedBody = body // 如果规范化失败，使用原始 body
+			}
+
+			hash := sha256.Sum256(normalizedBody)
+			key = key + ":" + hex.EncodeToString(hash[:])
+			util.Log().Info(fmt.Sprintf("Normalized body: %s", string(normalizedBody)))
+			util.Log().Info(fmt.Sprintf("POST request body hash: %s", hex.EncodeToString(hash[:])))
+		}
 	}
-	return ""
+
+	util.Log().Info(fmt.Sprintf("Final cache key: %s", key))
+	return key
+}
+
+func getRequestBody(c *gin.Context) []byte {
+	if c.Request.Method != "POST" {
+		return nil
+	}
+
+	body, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		util.Log().Error("Failed to read request body: " + err.Error())
+		return nil
+	}
+	// Restore the body for later use
+	c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
+	return body
 }

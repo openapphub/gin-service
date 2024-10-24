@@ -57,8 +57,13 @@ func NewRouter() *gin.Engine {
 		v1.POST("user/register", api.UserRegister)
 		// 用户登录
 		v1.POST("user/login", middleware.CacheMiddleware(5*time.Minute), api.UserLogin)
-		// 刷新token
+		// 刷新用户token
 		v1.POST("user/refresh", api.RefreshToken)
+
+		// 缓存管理, 常规情况下只允许管理员执行
+		v1.POST("cache/clear", api.ClearCacheByPrefix)
+		v1.POST("cache/refresh", api.RefreshCache)
+		v1.POST("cache/invalidate", api.InvalidateCache)
 
 		// 需要认证的路由
 		auth := v1.Group("")
