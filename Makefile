@@ -82,11 +82,11 @@ docker-down:
 
 .PHONY: docker-build
 docker-build:
-	$(DOCKER) build --env-file .env -t $(APP_NAME) .
+	$(DOCKER) build  -t $(APP_NAME) .
 
 .PHONY: docker-run
 docker-run:
-	$(DOCKER) run -p 3000:3000 --env-file .env --name $(APP_NAME) $(APP_NAME)
+	$(DOCKER) run --network host -p 3000:3000 --env-file .env --name $(APP_NAME)2 $(APP_NAME)
 
 # 数据库迁移
 .PHONY: migrate-up

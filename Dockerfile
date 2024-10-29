@@ -1,5 +1,5 @@
 # 使用官方 Go 镜像作为基础镜像
-FROM golang:1.20-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -19,13 +19,16 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o openapphub ./cmd/
 # 使用轻量级的 alpine 镜像
 FROM alpine:latest  
 
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates && \
+    mkdir /app
 
-WORKDIR /root/
+WORKDIR /app
 
 # 从 builder 阶段复制编译好的应用
 COPY --from=builder /app/openapphub .
 COPY --from=builder /app/.env .
+# 复制翻译文件
+COPY --from=builder /app/internal/config/locales ./locales
 
 # 暴露端口
 EXPOSE 3000

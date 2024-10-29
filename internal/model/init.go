@@ -26,7 +26,6 @@ func Database(connString string) {
 			Colorful:                  false,       // Disable color
 		},
 	)
-
 	db, err := gorm.Open(mysql.Open(connString), &gorm.Config{
 		Logger: newLogger,
 	})

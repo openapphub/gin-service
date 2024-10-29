@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"openapphub/internal/middleware"
 	"openapphub/internal/model"
 	"openapphub/internal/util"
@@ -15,6 +16,11 @@ import (
 func Init() {
 	// 从本地读取环境变量
 	godotenv.Load()
+	// 输出一下环境变量
+	fmt.Println(os.Getenv("GIN_MODE"))
+	fmt.Println(os.Getenv("PORT"))
+	fmt.Println(os.Getenv("MYSQL_DSN"))
+	fmt.Println(os.Getenv("REDIS_DSN"))
 
 	// 初始化 zap logger
 	middleware.InitLogger()
@@ -25,7 +31,7 @@ func Init() {
 	// 读取翻译文件
 	localesPath := findLocalesFile()
 	if err := LoadLocales(localesPath); err != nil {
-		util.Log().Panic("翻译文件加载失败", err)
+		util.Log().Panic("翻译文件加载失败")
 	}
 
 	// 连接数据库
@@ -36,7 +42,10 @@ func Init() {
 // findLocalesFile 查找翻译文件
 func findLocalesFile() string {
 	possiblePaths := []string{
+		"locales/zh-cn.yaml",
+		"/app/locales/zh-cn.yaml",
 		"internal/config/locales/zh-cn.yaml",
+		"/app/internal/config/locales/zh-cn.yaml",
 	}
 
 	for _, path := range possiblePaths {
