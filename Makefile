@@ -1,5 +1,5 @@
 # 变量
-APP_NAME := openapphub
+APP_NAME := records
 GO := go
 GOFLAGS := -v
 DOCKER := docker
@@ -17,21 +17,22 @@ swagger:
 .PHONY: help
 help:
 	@echo "可用命令："
-	@echo "  install     - 安装依赖"
-	@echo "  update-deps - 更新依赖"
-	@echo "  run         - 本地运行应用"
-	@echo "  build       - 构建应用"
-	@echo "  test        - 运行测试"
-	@echo "  clean       - 清理构建产物"
-	@echo "  docker-up   - 启动 Docker 服务（MySQL 和 Redis）"
-	@echo "  docker-down - 停止 Docker 服务"
-	@echo "  docker-build- 构建 Docker 镜像"
-	@echo "  docker-run  - 在 Docker 中运行应用"
-	@echo "  migrate-up  - 运行数据库迁移"
-	@echo "  migrate-down- 回滚数据库迁移"
-	@echo "  lint        - 运行代码检查"
-	@echo "  fmt         - 格式化代码"
-	@echo "  swagger     - 生成 Swagger 文档"
+	@echo "  install     	- 安装依赖"
+	@echo "  update-deps 	- 更新依赖"
+	@echo "  run         	- 本地运行应用"
+	@echo "  build       	- 构建应用"
+	@echo "  test        	- 运行测试"
+	@echo "  clean       	- 清理构建产物"
+	@echo "  docker-up   	- 启动 Docker 服务（MySQL 和 Redis）"
+	@echo "  docker-down 	- 停止 Docker 服务"
+	@echo "  docker-build	- 构建 Docker 镜像"
+	@echo "  docker-run  	- 在 Docker 中运行应用"
+	@echo "  migrate-drop - 运行数据库清理"
+	@echo "  migrate-up   - 运行数据库迁移"
+	@echo "  migrate-down - 回滚数据库迁移"
+	@echo "  lint         - 运行代码检查"
+	@echo "  fmt          - 格式化代码"
+	@echo "  swagger      - 生成 Swagger 文档"
 
 # 安装依赖
 .PHONY: install
@@ -86,9 +87,13 @@ docker-build:
 
 .PHONY: docker-run
 docker-run:
-	$(DOCKER) run --network host -p 3000:3000 --env-file .env --name $(APP_NAME)2 $(APP_NAME)
+	$(DOCKER) run --network host -p 3000:3000 --env-file .env --name $(APP_NAME) $(APP_NAME)
 
 # 数据库迁移
+.PHONY: migrate-drop
+migrate-drop:
+	@source .env && migrate -path database/migrations -database "mysql://$${MYSQL_USER}:$${MYSQL_PASSWORD}@tcp($${MYSQL_HOST}:$${MYSQL_PORT})/$${MYSQL_DATABASE}" drop
+
 .PHONY: migrate-up
 migrate-up:
 	@source .env && migrate -path database/migrations -database "mysql://$${MYSQL_USER}:$${MYSQL_PASSWORD}@tcp($${MYSQL_HOST}:$${MYSQL_PORT})/$${MYSQL_DATABASE}" up
